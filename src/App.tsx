@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Grid } from '@material-ui/core';
 
 export type ProductItemType = {
   id: number;
@@ -12,21 +12,27 @@ export type ProductItemType = {
 };
 
 const App = () => {
-  const getProducts = (): Promise<ProductItemType[]> =>
-    fetch('https://fakestoreapi.com/products')
-      .then((data) => data.json())
-      .then((products) => products)
-      .catch((error) => console.log(error.message));
+  const [products, setProducts] = useState<ProductItemType[]>([]);
+
+  const getProducts = async (): Promise<ProductItemType[]> => {
+    const response = await fetch('https://fakestoreapi.com/products');
+    const data = await response.json();
+    setProducts(data);
+    return data;
+  };
 
   useEffect(() => {
     getProducts();
   }, []);
 
   return (
-    <div>
-      <h1 className='title'>App</h1>
-      <Button color='primary'>Hello World</Button>
-    </div>
+    <Grid container spacing={3}>
+      {products.map((product) => (
+        <Grid item key={product.id}>
+          <h1>{product.title}</h1>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
