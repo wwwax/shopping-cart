@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Button } from '@material-ui/core';
 
 export type ProductItemType = {
   id: number;
@@ -21,7 +22,12 @@ const App = () => {
     getProducts();
   }, []);
 
-  return <h1 style={{ backgroundColor: 'red' }}>App</h1>;
+  return (
+    <div>
+      <h1 className='title'>App</h1>
+      <Button color='primary'>Hello World</Button>
+    </div>
+  );
 };
 
 export default App;
