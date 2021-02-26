@@ -1,0 +1,17 @@
+.container {
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+}
+
+.total {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.title,
+.total {
+  font-family: consolas;
+}

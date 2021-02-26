@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductItem from './components/ProductItem';
+import Cart from './components/Cart';
 
 // material-ui
 import { Grid } from '@material-ui/core';
@@ -13,6 +14,7 @@ import styles from './App.module.css';
 const App = () => {
   const [products, setProducts] = useState<ProductItemType[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [selectedProducts, setSelectedProducts] = useState<ProductItemType[]>([]);
 
   const getProducts = async () => {
     const response = await fetch('https://fakestoreapi.com/products');
@@ -26,14 +28,14 @@ const App = () => {
 
   return (
     <Grid className={styles.container} container spacing={2}>
-      <Drawer open={isCartOpen} anchor='right' onClose={() => setIsCartOpen(false)}>
-        Lorem ipsum dolor sit amet.
+      <Drawer anchor='right' open={isCartOpen} onClose={() => setIsCartOpen(false)}>
+        <Cart selectedProducts={products} />
       </Drawer>
 
       <Badge
         className={styles.cartButton}
         badgeContent={7}
-        color='error'
+        color='primary'
         onClick={() => setIsCartOpen(true)}>
         <AddShoppingCartIcon />
       </Badge>
