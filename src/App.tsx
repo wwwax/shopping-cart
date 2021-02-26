@@ -22,6 +22,10 @@ const App = () => {
     setProducts(products);
   };
 
+  const addToCart = (item: ProductItemType) => {
+    setSelectedProducts((prev) => [...prev, item]);
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -29,20 +33,20 @@ const App = () => {
   return (
     <Grid className={styles.container} container spacing={2}>
       <Drawer anchor='right' open={isCartOpen} onClose={() => setIsCartOpen(false)}>
-        <Cart selectedProducts={products} />
+        <Cart selectedProducts={selectedProducts} />
       </Drawer>
 
       <Badge
         className={styles.cartButton}
         badgeContent={7}
-        color='primary'
+        color='secondary'
         onClick={() => setIsCartOpen(true)}>
         <AddShoppingCartIcon />
       </Badge>
 
       {products.map((product) => (
         <Grid item key={product.id} xs={12} sm={3}>
-          <ProductItem product={product} />
+          <ProductItem product={product} addToCart={addToCart} />
         </Grid>
       ))}
     </Grid>

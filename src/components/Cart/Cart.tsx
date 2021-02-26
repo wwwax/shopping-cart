@@ -11,7 +11,9 @@ const Cart: React.FC<Props> = ({ selectedProducts }) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Cart</h1>
-      {selectedProducts.length === 0 ? <p>No products in cart</p> : null}
+      {selectedProducts.length === 0 ? (
+        <p className={styles.emptyList}>No products in cart</p>
+      ) : null}
 
       {selectedProducts.map((item) => (
         <CartItem key={item.id} product={item} />

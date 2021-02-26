@@ -12,6 +12,12 @@
 }
 
 .title,
-.total {
+.total,
+.emptyList {
   font-family: consolas;
+}
+
+.emptyList {
+  font-size: 20px;
+  text-transform: uppercase;
 }
