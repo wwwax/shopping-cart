@@ -19,7 +19,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
       </div>
 
       <div className={styles.counter}>
-        <div className={styles.counterValue}>1</div>
+        <div className={styles.counterValue}>{product.amount}</div>
         <div className={styles.buttonWrapper}>
           <Button variant='contained' color='secondary'>
             -

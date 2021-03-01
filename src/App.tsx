@@ -23,8 +23,21 @@ const App = () => {
   };
 
   const addToCart = (item: ProductItemType) => {
-    setSelectedProducts((prev) => [...prev, item]);
+    setSelectedProducts((prev) => {
+      const isProductInCart = selectedProducts.find((el) => el.id === item.id);
+
+      if (isProductInCart) {
+        return prev.map((el) => {
+          return el.id === item.id ? { ...el, amount: el.amount + 1 } : el;
+        });
+      }
+
+      return [...prev, { ...item, amount: 1 }];
+    });
   };
+
+  const getSelectedProductsAmount = (products: ProductItemType[]) =>
+    products.reduce((acc, el) => el.amount + acc, 0);
 
   useEffect(() => {
     getProducts();
@@ -38,7 +51,7 @@ const App = () => {
 
       <Badge
         className={styles.cartButton}
-        badgeContent={7}
+        badgeContent={getSelectedProductsAmount(selectedProducts)}
         color='secondary'
         onClick={() => setIsCartOpen(true)}>
         <AddShoppingCartIcon />
