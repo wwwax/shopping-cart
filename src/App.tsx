@@ -36,6 +36,18 @@ const App = () => {
     });
   };
 
+  const removeFromCart = (id: number) => {
+    setSelectedProducts((prev) =>
+      prev.reduce((acc, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return acc;
+
+          return [...acc, { ...item, amount: item.amount - 1 }];
+        } else return [...acc, item];
+      }, [] as ProductItemType[]),
+    );
+  };
+
   const getSelectedProductsAmount = (products: ProductItemType[]) =>
     products.reduce((acc, el) => el.amount + acc, 0);
 
@@ -46,7 +58,11 @@ const App = () => {
   return (
     <Grid className={styles.container} container spacing={2}>
       <Drawer anchor='right' open={isCartOpen} onClose={() => setIsCartOpen(false)}>
-        <Cart selectedProducts={selectedProducts} />
+        <Cart
+          selectedProducts={selectedProducts}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+        />
       </Drawer>
 
       <Badge

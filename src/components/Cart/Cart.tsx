@@ -5,9 +5,11 @@ import styles from './Cart.module.css';
 
 type Props = {
   selectedProducts: ProductItemType[];
+  addToCart: (item: ProductItemType) => void;
+  removeFromCart: (id: number) => void;
 };
 
-const Cart: React.FC<Props> = ({ selectedProducts }) => {
+const Cart: React.FC<Props> = ({ selectedProducts, addToCart, removeFromCart }) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Cart</h1>
@@ -16,7 +18,12 @@ const Cart: React.FC<Props> = ({ selectedProducts }) => {
       ) : null}
 
       {selectedProducts.map((item) => (
-        <CartItem key={item.id} product={item} />
+        <CartItem
+          key={item.id}
+          product={item}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+        />
       ))}
 
       <div className={styles.total}>Total: $</div>
