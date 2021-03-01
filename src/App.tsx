@@ -1,23 +1,25 @@
-import { useEffect, useState } from 'react';
-import ProductItem from './components/ProductItem';
-import Cart from './components/Cart';
+import { useEffect, useState } from "react";
+import ProductItem from "./components/ProductItem";
+import Cart from "./components/Cart";
 
 // material-ui
-import { Grid } from '@material-ui/core';
-import Badge from '@material-ui/core/Badge';
-import Drawer from '@material-ui/core/Drawer';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { Grid } from "@material-ui/core";
+import Badge from "@material-ui/core/Badge";
+import Drawer from "@material-ui/core/Drawer";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
-import { ProductItemType } from './types';
-import styles from './App.module.css';
+import { ProductItemType } from "./types";
+import styles from "./App.module.css";
 
 const App = () => {
   const [products, setProducts] = useState<ProductItemType[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [selectedProducts, setSelectedProducts] = useState<ProductItemType[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<ProductItemType[]>(
+    []
+  );
 
   const getProducts = async () => {
-    const response = await fetch('https://fakestoreapi.com/products');
+    const response = await fetch("https://fakestoreapi.com/products");
     const products = await response.json();
     setProducts(products);
   };
@@ -26,11 +28,10 @@ const App = () => {
     setSelectedProducts((prev) => {
       const isProductInCart = selectedProducts.find((el) => el.id === item.id);
 
-      if (isProductInCart) {
-        return prev.map((el) => {
-          return el.id === item.id ? { ...el, amount: el.amount + 1 } : el;
-        });
-      }
+      if (isProductInCart)
+        return prev.map((el) =>
+          el.id === item.id ? { ...el, amount: el.amount + 1 } : el
+        );
 
       return [...prev, { ...item, amount: 1 }];
     });
@@ -44,7 +45,7 @@ const App = () => {
 
           return [...acc, { ...item, amount: item.amount - 1 }];
         } else return [...acc, item];
-      }, [] as ProductItemType[]),
+      }, [] as ProductItemType[])
     );
   };
 
@@ -55,9 +56,25 @@ const App = () => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    const saved = JSON.parse(
+      localStorage.getItem("selectedProducts") || "[]"
+    ) as ProductItemType[];
+
+    setSelectedProducts(saved);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
+  }, [selectedProducts]);
+
   return (
     <Grid className={styles.container} container spacing={2}>
-      <Drawer anchor='right' open={isCartOpen} onClose={() => setIsCartOpen(false)}>
+      <Drawer
+        anchor="right"
+        open={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      >
         <Cart
           selectedProducts={selectedProducts}
           addToCart={addToCart}
@@ -68,8 +85,9 @@ const App = () => {
       <Badge
         className={styles.cartButton}
         badgeContent={getSelectedProductsAmount(selectedProducts)}
-        color='secondary'
-        onClick={() => setIsCartOpen(true)}>
+        color="secondary"
+        onClick={() => setIsCartOpen(true)}
+      >
         <AddShoppingCartIcon />
       </Badge>
 
